@@ -1,8 +1,0 @@
-[phases.setup]
-nixpkgsArchive = 'master'
-
-[phases.build]
-cmds = ["bun run build"]
-
-[start]
-cmd = "bun start"
