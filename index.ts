@@ -31,7 +31,7 @@ app.post('/query', zValidator('json', schema), async (c) => {
     const allowDangerousSqlCommands = process.env.ALLOW_DANGEROUS_SQL_COMMANDS === 'true'
 
     if (!allowDangerousSqlCommands && (query.includes('DROP') || query.includes('DELETE') || query.includes('TRUNCATE'))) {
-      return c.json({ error: 'Dangerous SQL command' }, 400)
+      return c.json({ error: 'dangerous sql commands is disabled' }, 400)
     }
 
     const result = await pool.query(query, args);
