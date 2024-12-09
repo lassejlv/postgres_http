@@ -2,11 +2,14 @@
 
 Turns your postgres db into an http server. Great for beginners or just small projects and testing.
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/template/UYtPO2?referralCode=lasse)
+
 ## API reference
 
 ```bash
 - POST /query
   - body: { query: string, args: any[] }
+  - headers: { Authorization: Bearer <api_key> }
   - response: { rows: any[] }
 ```
 
