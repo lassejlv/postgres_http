@@ -11,6 +11,11 @@ Turns your postgres db into an http server. Great for beginners or just small pr
   - body: { query: string, args: any[] }
   - headers: { Authorization: Bearer <api_key> }
   - response: { rows: any[] }
+
+- GET /status
+     - headers: { Authorization: Bearer  }
+     - response: { ok: boolean, ping: number  }
+
 ```
 
 ## Installation
