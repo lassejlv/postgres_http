@@ -4,17 +4,21 @@ import { Pool } from 'pg'
 import { z } from 'zod'
 import { authMiddleware } from './middleware/auth'
 import { logger } from 'hono/logger'
+import { bearerAuth } from 'hono/bearer-auth'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  // connection timeout = 1 minute
+  connectionTimeoutMillis: 60 * 1000,
 })
 
 const app = new Hono()
 
+const token = process.env.API_TOKEN;
+if (!token) throw new Error('API_TOKEN is required')
 
 app.use(logger())
-app.use("*", authMiddleware)
-
+app.use("*", bearerAuth({ token }))
 
 const schema = z.object({
   query: z.string(),
