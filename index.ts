@@ -21,16 +21,15 @@ const schema = z.object({
   args: z.array(z.any()).optional(),
 })
 
-
-
 app.post('/query', zValidator('json', schema), async (c) => {
   try {
     const { query, args } = c.req.valid('json')
 
-    if (query.toLowerCase().includes('drop') || query.toLowerCase().includes('delete') || query.toLowerCase().includes('truncate')) {
-      throw new Error('Prohibited query detected')
-    }
+    const allowDangerousSqlCommands = process.env.ALLOW_DANGEROUS_SQL_COMMANDS === 'true'
 
+    if (!allowDangerousSqlCommands && (query.includes('DROP') || query.includes('DELETE') || query.includes('TRUNCATE'))) {
+      return c.json({ error: 'Dangerous SQL command' }, 400)
+    }
 
     const result = await pool.query(query, args);
 
