@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { logger } from 'hono/logger'
 import { bearerAuth } from 'hono/bearer-auth'
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   // connection timeout = 1 minute
   connectionTimeoutMillis: 60 * 1000,
@@ -13,8 +13,8 @@ const pool = new Pool({
 
 const app = new Hono()
 
-const token = process.env.API_TOKEN;
-if (!token) throw new Error('API_TOKEN is required')
+const token = process.env.API_KEY;
+if (!token) throw new Error('API_KEY is required')
 
 app.use(logger())
 app.use("*", bearerAuth({ token }))
