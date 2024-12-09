@@ -4,6 +4,7 @@ import { Pool } from 'pg'
 import { z } from 'zod'
 import { logger } from 'hono/logger'
 import { bearerAuth } from 'hono/bearer-auth'
+import { cors } from 'hono/cors'
 
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,7 +18,9 @@ const token = process.env.API_KEY;
 if (!token) throw new Error('API_KEY is required')
 
 app.use(logger())
+app.use("*", cors({ origin: "*" }))
 app.use("*", bearerAuth({ token }))
+
 
 const schema = z.object({
   query: z.string(),
