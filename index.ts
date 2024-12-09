@@ -2,7 +2,6 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { Pool } from 'pg'
 import { z } from 'zod'
-import { authMiddleware } from './middleware/auth'
 import { logger } from 'hono/logger'
 import { bearerAuth } from 'hono/bearer-auth'
 
