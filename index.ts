@@ -6,8 +6,15 @@ import { logger } from 'hono/logger'
 import { bearerAuth } from 'hono/bearer-auth'
 import { cors } from 'hono/cors'
 
+// Imported helper routes
+import findFirst from './routes/findFirst'
+import findMany from './routes/findMany'
+
+const databaseUrl = process.env.DATABASE_URL
+if (!databaseUrl) throw new Error('DATABASE_URL is required')
+
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: databaseUrl,
   // connection timeout = 1 minute
   connectionTimeoutMillis: 60 * 1000,
 })
@@ -18,7 +25,7 @@ const token = process.env.API_KEY;
 if (!token) throw new Error('API_KEY is required')
 
 app.use(logger())
-app.use("*", cors({ origin: "*" }))
+app.use("*", cors())
 app.use("*", bearerAuth({ token }))
 
 
@@ -26,6 +33,11 @@ const schema = z.object({
   query: z.string(),
   args: z.array(z.any()).optional(),
 })
+
+app.basePath("/helpers")
+  .route("/findFirst", findFirst)
+  .route("/findMany", findMany)
+
 
 app.post('/query', zValidator('json', schema), async (c) => {
   try {

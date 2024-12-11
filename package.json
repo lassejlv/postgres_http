@@ -3,7 +3,8 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "bun build --compile --minify --sourcemap index.ts --outfile ./dist/server",
+    "compile": "bun build --compile --minify --sourcemap dist/js/index.js --outfile ./dist/server",
+    "build": "bun build --target=bun index.ts --outdir ./dist/js",
     "dev": "bun --watch index.ts",
     "start": "./dist/server"
   },

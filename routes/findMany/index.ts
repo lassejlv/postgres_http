@@ -6,9 +6,9 @@ import { findManySchema } from "./schema";
 
 const router = new Hono();
 
-router.get("/", zValidator("query", findManySchema), async (c) => {
+router.post("/", zValidator("json", findManySchema), async (c) => {
   try {
-    const { table, where, limit } = c.req.valid("query")
+    const { table, where, limit } = c.req.valid("json")
 
     const query = `SELECT * FROM ${table} WHERE ${where} LIMIT ${limit}`;
     const result = await pool.query(query);
