@@ -10,7 +10,7 @@ router.post("/", zValidator("json", findManySchema), async (c) => {
   try {
     const { table, where, limit } = c.req.valid("json")
 
-    const query = `SELECT * FROM ${table} WHERE ${where} LIMIT ${limit}`;
+    const query = `SELECT * FROM ${table} ${where && `WHERE ${where}`} LIMIT ${limit}`;
     const result = await pool.query(query);
 
     return c.json(result);
